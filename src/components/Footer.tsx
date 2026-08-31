@@ -1,3 +1,4 @@
+import logoWhite from '../assets/logo_white.png';
 import React from 'react';
 import { SITE_CONTENT } from '../data/content';
 import { MessageCircle, MapPin, Mail, Phone, ArrowUp } from 'lucide-react';
@@ -20,7 +21,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-3">
             <div className="overflow-hidden" style={{height: '90px', width: '300px'}}>
               <img
-                src="/logo_white.png"
+                src={logoWhite}
                 alt="ClickShot Logo"
                 style={{ height: '320px', marginTop: '-115px', marginLeft: '-30px' }}
               />
