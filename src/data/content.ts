@@ -1,14 +1,3 @@
-export interface ServiceItem {
-  id: string;
-  title: string;
-  tagline: string;
-  description: string;
-  turnaroundTime: string;
-  highlights: string[];
-  imageUrl: string;
-  category: string;
-}
-
 export const SITE_CONTENT = {
   brand: {
     name: 'ClickShot',

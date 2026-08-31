@@ -57,7 +57,6 @@ const ReelCard: React.FC<{
       <video
         ref={videoRef}
         src={reel.videoUrl}
-        poster={reel.posterUrl}
         loop
         muted
         playsInline

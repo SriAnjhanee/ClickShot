@@ -50,7 +50,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
       category: 'weddings',
       categoryLabel: reel.category,
       videoUrl: reel.videoUrl,
-      posterUrl: reel.posterUrl,
       turnaroundTime: reel.turnaround.replace('⚡ ', ''),
       client: reel.title,
       eventDescription: 'Captured live on-site and delivered within 40 minutes before the celebration concluded.',
@@ -131,7 +130,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
               >
                 <video
                   src={HERO_REELS[1].videoUrl}
-                  poster={HERO_REELS[1].posterUrl}
                   autoPlay
                   loop
                   muted
@@ -152,7 +150,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
               >
                 <video
                   src={HERO_REELS[2].videoUrl}
-                  poster={HERO_REELS[2].posterUrl}
                   autoPlay
                   loop
                   muted
@@ -173,7 +170,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
                 <video
                   ref={centerVideoRef}
                   src={HERO_REELS[0].videoUrl}
-                  poster={HERO_REELS[0].posterUrl}
                   autoPlay
                   loop
                   muted={isMuted}

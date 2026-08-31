@@ -4,7 +4,6 @@ export interface ReelItem {
   category: 'weddings' | 'celebrations' | 'brands' | 'lifestyle' | 'parties';
   categoryLabel: string;
   videoUrl: string;
-  posterUrl: string;
   turnaroundTime: string;
   client: string;
   eventDescription: string;

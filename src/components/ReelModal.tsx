@@ -94,7 +94,6 @@ export const ReelModal: React.FC<ReelModalProps> = ({ reel, onClose, onBookShoot
           <video
             ref={videoRef}
             src={reel.videoUrl}
-            poster={reel.posterUrl}
             autoPlay
             loop
             muted={isMuted}
