@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { SITE_CONTENT } from '../data/content';
+import vid1 from '../assets/birthday.mp4';
 import vid2 from '../assets/green.mp4';
 import vid3 from '../assets/baby shower.mp4';
 import vid4 from '../assets/Marriage.mp4';
 
-const LOCAL_VIDEOS = [vid2, vid3, vid4];
+const LOCAL_VIDEOS = [vid1, vid2, vid3, vid4];
 
 const { services } = SITE_CONTENT;
 
