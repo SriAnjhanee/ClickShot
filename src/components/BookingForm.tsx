@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { SITE_CONTENT } from '../data/content';
 import { 
   Calendar, 
@@ -51,48 +50,49 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     'Special Occasions & Pop-Ups',
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
 
-    // TODO: Replace with your EmailJS Service ID
-    const SERVICE_ID = 'service_xxxxxxx';
-    // Template ID
-    const TEMPLATE_ID = 'template_qs1evbu';
-    // Public Key
-    const PUBLIC_KEY = 'JIj_mI2g--fj6KacC';
+  const SCRIPT_URL =
+    'https://script.google.com/macros/s/AKfycbzLJkpiPUWmasB9ajTMfxLDKHIvLL66IBc4DJp9H3P2Q1BQQXHxN4eeQn6d2nPw7EUN/exec';
 
-    emailjs.send(
-      SERVICE_ID,
-      TEMPLATE_ID,
-      {
-        name: formData.name,
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify({
+        fullName: formData.name,
         phone: formData.phone,
         email: formData.email,
-        event_type: formData.eventType,
-        event_date: formData.eventDate,
-        location: formData.location,
-        notes: formData.notes || 'No additional notes',
-      },
-      PUBLIC_KEY
-    )
-    .then(() => {
-      setLoading(false);
-      setSubmitted(true);
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#E11D48', '#FF1E41', '#10B981', '#000000', '#F59E0B'],
-      });
-    })
-    .catch(() => {
-      setLoading(false);
-      setSubmitted(true); // Still show confirmation even if email fails
+        shootType: formData.eventType,
+        eventDate: formData.eventDate,
+        venue: formData.location,
+        message: formData.notes,
+      }),
     });
-  };
 
-  const handleReset = () => {
+    setLoading(false);
+    setSubmitted(true);
+
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#E11D48', '#FF1E41', '#10B981', '#000000', '#F59E0B'],
+    });
+
+  } catch (error) {
+    console.error('Form submission error:', error);
+    setLoading(false);
+    alert('Something went wrong. Please try again.');
+  }
+};
+
+  function handleReset() {
     setSubmitted(false);
     setFormData({
       name: '',
@@ -103,7 +103,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
       location: '',
       notes: '',
     });
-  };
+  }
 
   const formBody = (
     <div className="relative">
