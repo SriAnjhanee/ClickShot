@@ -40,6 +40,95 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+
+  const minBookingDate = (() => {
+    const today = new Date();
+    const offset = today.getTimezoneOffset();
+    const localDate = new Date(today.getTime() - offset * 60000);
+    return localDate.toISOString().split('T')[0];
+  })();
+
+  const validatePhone = (value: string) => {
+    const normalized = value.trim();
+    const pattern = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
+    return pattern.test(normalized);
+  };
+
+  const validateEmail = (value: string) => {
+    const normalized = value.trim();
+
+    if (!normalized) {
+      return 'Email is required.';
+    }
+
+    if (/[\s]/.test(normalized)) {
+      return 'Email cannot contain spaces.';
+    }
+
+    if (normalized.startsWith('@') || normalized.endsWith('@')) {
+      return 'Please enter a valid email like name@domain.com';
+    }
+
+    if (normalized.includes('..')) {
+      return 'Please enter a valid email like name@domain.com';
+    }
+
+    const basicPattern = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,}$/i;
+    if (!basicPattern.test(normalized)) {
+      return 'Please enter a valid email like name@domain.com';
+    }
+
+    const [localPart, domain] = normalized.split('@');
+    if (!localPart || !domain || domain.includes('..')) {
+      return 'Please enter a valid email like name@domain.com';
+    }
+
+    const domainLower = domain.toLowerCase();
+    const reservedDomains = ['example.com', 'example.org', 'example.net'];
+    if (reservedDomains.includes(domainLower) || domainLower.endsWith('.example.com') || domainLower.endsWith('.example.org') || domainLower.endsWith('.example.net')) {
+      return 'Example domains are not allowed. Please use your real email address.';
+    }
+
+    const blockedAddresses = [
+      'sri@example.com',
+      'test@test.com',
+      'abc@abc.com',
+      'test@gmail.com',
+      'demo@demo.com',
+      'sample@sample.com',
+      'user@example.com',
+      'admin@example.com',
+      'noreply@example.com',
+      'hello@example.com'
+    ];
+
+    if (blockedAddresses.includes(normalized.toLowerCase())) {
+      return 'Please use a real email address instead of a placeholder or test address.';
+    }
+
+    const localLower = localPart.toLowerCase();
+    const placeholderLocalParts = ['test', 'demo', 'sample', 'abc', 'user', 'admin', 'noreply', 'hello', 'placeholder'];
+    if (placeholderLocalParts.includes(localLower)) {
+      return 'Please use a real email address instead of a placeholder or test address.';
+    }
+
+    if (normalized.toLowerCase().endsWith('@gmail') || normalized.toLowerCase().endsWith('@yahoo') || normalized.toLowerCase().endsWith('@outlook') || normalized.toLowerCase().endsWith('@hotmail') || normalized.toLowerCase().endsWith('@icloud')) {
+      return 'Please include the full domain, for example name@gmail.com';
+    }
+
+    if (!domain.includes('.')) {
+      return 'Please include a valid domain, for example name@domain.com';
+    }
+
+    const domainParts = domain.split('.');
+    const tld = domainParts[domainParts.length - 1];
+    if (!tld || tld.length < 2) {
+      return 'Please include a valid domain extension.';
+    }
+
+    return '';
+  };
 
   const eventTypes = [
     'Weddings & Celebrations',
@@ -51,46 +140,76 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
 
-  const SCRIPT_URL =
-    'https://script.google.com/macros/s/AKfycbzLJkpiPUWmasB9ajTMfxLDKHIvLL66IBc4DJp9H3P2Q1BQQXHxN4eeQn6d2nPw7EUN/exec';
+    const phoneValid = validatePhone(formData.phone);
+    const emailValidationError = validateEmail(formData.email);
 
-  try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
-      },
-      body: JSON.stringify({
-        fullName: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        shootType: formData.eventType,
-        eventDate: formData.eventDate,
-        venue: formData.location,
-        message: formData.notes,
-      }),
-    });
+    if (!phoneValid) {
+      alert('Please enter a valid Indian mobile number, for example +91 98765 43210 or 9876543210.');
+      return;
+    }
 
-    setLoading(false);
-    setSubmitted(true);
+    if (emailValidationError) {
+      setEmailError(emailValidationError);
+      return;
+    }
 
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#E11D48', '#FF1E41', '#10B981', '#000000', '#F59E0B'],
-    });
+    setEmailError('');
 
-  } catch (error) {
-    console.error('Form submission error:', error);
-    setLoading(false);
-    alert('Something went wrong. Please try again.');
-  }
-};
+    if (!formData.eventDate) {
+      alert('Please select an event date.');
+      return;
+    }
+
+    const selectedDate = new Date(`${formData.eventDate}T00:00:00`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      alert('Please select today or a future date. Past dates are not allowed.');
+      return;
+    }
+
+    setLoading(true);
+
+    const SCRIPT_URL =
+      'https://script.google.com/macros/s/AKfycbzLJkpiPUWmasB9ajTMfxLDKHIvLL66IBc4DJp9H3P2Q1BQQXHxN4eeQn6d2nPw7EUN/exec';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify({
+          fullName: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          shootType: formData.eventType,
+          eventDate: formData.eventDate,
+          venue: formData.location,
+          message: formData.notes,
+        }),
+      });
+
+      setLoading(false);
+      setSubmitted(true);
+
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#E11D48', '#FF1E41', '#10B981', '#000000', '#F59E0B'],
+      });
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setLoading(false);
+      alert('Something went wrong. Please try again.');
+    }
+  };
 
   function handleReset() {
     setSubmitted(false);
@@ -149,7 +268,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 <input
                   type="tel"
                   required
-                  placeholder="e.g. +91 98765 43210"
+                  inputMode="tel"
+                  pattern="^(?:\\+91[\\s-]?)?[6-9]\\d{9}$"
+                  placeholder="e.g: +91 9876543210"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none"
@@ -169,10 +290,18 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                   required
                   placeholder="e.g. ananya@example.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => {
+                    const nextEmail = e.target.value;
+                    setFormData({ ...formData, email: nextEmail });
+                    const error = validateEmail(nextEmail);
+                    setEmailError(error);
+                  }}
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none"
                 />
               </div>
+              {emailError && (
+                <p className="mt-2 text-xs text-red-600 font-medium">{emailError}</p>
+              )}
             </div>
 
             {/* Event / Shoot Type */}
@@ -206,6 +335,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 <input
                   type="date"
                   required
+                  min={minBookingDate}
                   value={formData.eventDate}
                   onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none"
