@@ -249,16 +249,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
   const formBody = (
     <div className="relative">
-      {isModal && onCloseModal && (
-        <button
-          onClick={onCloseModal}
-          className="absolute -top-22 right-0 p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-600 transition-colors z-20"
-          aria-label="Close form"
-        >
-          <X className="w-5 h-5" />
-        </button>
-      )}
-
       {!submitted ? (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -294,12 +284,12 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                     type="tel"
                     required
                     inputMode="numeric"
-                    pattern="[6-9]\\d{9}"
+                    pattern="[6-9]\d{9}"
                     maxLength={10}
                     placeholder="9876543210"
                     value={formData.phone}
                     onChange={(e) => {
-                      const digitsOnly = e.target.value.replace(/\\D/g, '').slice(0, 10);
+                      const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
                       setFormData({ ...formData, phone: digitsOnly });
                     }}
                     className="w-full px-3 py-3 bg-transparent text-sm font-medium text-surface-950 outline-none"
@@ -512,14 +502,24 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
   if (isModal) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
         <div className="absolute inset-0" onClick={onCloseModal} />
-        <div className="relative z-10 w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-zinc-200 max-h-[90vh] overflow-y-auto">
-          <div className="mb-6">
+        <div className="relative z-10 w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-10 shadow-2xl border border-zinc-200 max-h-[calc(100vh-1.5rem)] sm:max-h-[90vh] overflow-y-auto">
+          {onCloseModal && (
+            <button
+              onClick={onCloseModal}
+              className="absolute top-3 right-3 sm:top-5 sm:right-5 p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-600 transition-colors z-20"
+              aria-label="Close form"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
+
+          <div className="mb-6 pr-12 sm:pr-14">
             <span className="text-xs font-bold uppercase tracking-wider text-brand-600 block mb-1">
               Book a ClickShot Creator
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-surface-950">
+            <h2 className="text-xl sm:text-3xl leading-tight font-extrabold text-surface-950">
               Reserve Your Instant Reel Shoot
             </h2>
           </div>
