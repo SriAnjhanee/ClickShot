@@ -284,7 +284,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                     type="tel"
                     required
                     inputMode="numeric"
-                    pattern="[6-9]\d{9}"
+                    pattern="[6-9][0-9]{9}"
                     maxLength={10}
                     placeholder="9876543210"
                     value={formData.phone}
