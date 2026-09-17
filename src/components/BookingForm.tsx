@@ -186,17 +186,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     setLoading(true);
 
     const SCRIPT_URL =
-      'https://script.google.com/macros/s/AKfycbxOBrzPem7IKAQdZhnNas6VSTE3YL7kyUWXJzwEpsvHUSnw39_MbyFJgp4IRwe2Tmz-/exec';
+      'https://script.google.com/macros/s/AKfycbzqU5BuTuJ-ubB6VO7hFs5tiyKvVdXSiTczN8xQ8URPJUBF0eV2xeEieMxm0y4EJOvI/exec';
 
     try {
-      const response = await fetch(SCRIPT_URL, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'cors',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8',
         },
         body: JSON.stringify({
-          action: 'submitBooking',
           fullName: formData.name,
           phone: `+91${formData.phone}`,
           email: formData.email,
@@ -207,14 +206,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           message: formData.notes,
         }),
       });
-
-      const result = await response.json();
-      if (!response.ok || !result.ok) {
-        if (result.type === 'email') {
-          setEmailError(result.message);
-        }
-        throw new Error(result.message || 'Unable to submit the booking.');
-      }
 
       setLoading(false);
       setSubmitted(true);
