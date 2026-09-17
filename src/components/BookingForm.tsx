@@ -51,7 +51,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
   const validatePhone = (value: string) => {
     const normalized = value.trim();
-    const pattern = /^(?:\+91[\s-]?)?[6-9]\d{9}$/;
+    const pattern = /^[6-9]\d{9}$/;
     return pattern.test(normalized);
   };
 
@@ -177,15 +177,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({
       'https://script.google.com/macros/s/AKfycbzLJkpiPUWmasB9ajTMfxLDKHIvLL66IBc4DJp9H3P2Q1BQQXHxN4eeQn6d2nPw7EUN/exec';
 
     try {
-      await fetch(SCRIPT_URL, {
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
+        mode: 'cors',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          action: 'submitBooking',
           fullName: formData.name,
-          phone: formData.phone,
+          phone: `+91${formData.phone}`,
           email: formData.email,
           shootType: formData.eventType,
           eventDate: formData.eventDate,
@@ -193,6 +194,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           message: formData.notes,
         }),
       });
+
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        if (result.type === 'email') {
+          setEmailError(result.message);
+        }
+        throw new Error(result.message || 'Unable to submit the booking.');
+      }
 
       setLoading(false);
       setSubmitted(true);
@@ -265,16 +274,23 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               </label>
               <div className="relative">
                 <Phone className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="tel"
-                  required
-                  inputMode="tel"
-                  pattern="^(?:\\+91[\\s-]?)?[6-9]\\d{9}$"
-                  placeholder="e.g: +91 9876543210"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none"
-                />
+                <div className="w-full pl-10 flex items-center rounded-xl border border-zinc-200 bg-surface-50 focus-within:bg-white focus-within:border-brand-600 focus-within:ring-2 focus-within:ring-brand-600/20 transition-all">
+                  <span className="pl-3 pr-2 text-sm font-semibold text-surface-600 border-r border-zinc-200">+91</span>
+                  <input
+                    type="tel"
+                    required
+                    inputMode="numeric"
+                    pattern="[6-9]\\d{9}"
+                    maxLength={10}
+                    placeholder="9876543210"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const digitsOnly = e.target.value.replace(/\\D/g, '').slice(0, 10);
+                      setFormData({ ...formData, phone: digitsOnly });
+                    }}
+                    className="w-full px-3 py-3 bg-transparent text-sm font-medium text-surface-950 outline-none"
+                  />
+                </div>
               </div>
             </div>
 
