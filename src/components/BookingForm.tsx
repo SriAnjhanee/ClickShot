@@ -193,7 +193,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         method: 'POST',
         mode: 'cors',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain;charset=utf-8',
         },
         body: JSON.stringify({
           action: 'submitBooking',
