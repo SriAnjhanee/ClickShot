@@ -186,7 +186,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     setLoading(true);
 
     const SCRIPT_URL =
-      'https://script.google.com/macros/s/AKfycbzLJkpiPUWmasB9ajTMfxLDKHIvLL66IBc4DJp9H3P2Q1BQQXHxN4eeQn6d2nPw7EUN/exec';
+      'https://script.google.com/macros/s/AKfycbxOBrzPem7IKAQdZhnNas6VSTE3YL7kyUWXJzwEpsvHUSnw39_MbyFJgp4IRwe2Tmz-/exec';
 
     try {
       const response = await fetch(SCRIPT_URL, {
