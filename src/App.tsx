@@ -15,11 +15,13 @@ import type { ReelItem } from './data/portfolio';
 export function App() {
   const [selectedReel, setSelectedReel] = useState<ReelItem | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
-  const [selectedServiceForBooking, setSelectedServiceForBooking] = useState('Weddings & Celebrations');
+  const [selectedServiceForBooking, setSelectedServiceForBooking] = useState('');
 
   const handleOpenBooking = (serviceType?: string) => {
     if (serviceType) {
       setSelectedServiceForBooking(serviceType);
+    } else {
+      setSelectedServiceForBooking('');
     }
     setBookingModalOpen(true);
   };

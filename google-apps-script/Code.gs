@@ -62,7 +62,7 @@ function saveBooking(payload) {
     SpreadsheetApp.getActiveSpreadsheet().insertSheet(SHEET_NAME);
 
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Timestamp', 'Full Name', 'Phone', 'Email', 'Shoot Type', 'Event Date', 'Venue', 'Message']);
+    sheet.appendRow(['Timestamp', 'Full Name', 'Phone', 'Email', 'Shoot Type', 'Event Date', 'Preferred Call Time', 'Venue', 'Message']);
   }
 
   sheet.appendRow([
@@ -72,6 +72,7 @@ function saveBooking(payload) {
     payload.email || '',
     payload.shootType || '',
     payload.eventDate || '',
+    payload.preferredTime || 'Anytime',
     payload.venue || '',
     payload.message || '',
   ]);

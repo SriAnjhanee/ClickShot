@@ -12,6 +12,7 @@ import {
   CheckCircle2, 
   Sparkles, 
   ShieldCheck,
+  ChevronDown,
   X
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -23,7 +24,7 @@ interface BookingFormProps {
 }
 
 export const BookingForm: React.FC<BookingFormProps> = ({
-  initialEventType = 'Weddings & Celebrations',
+  initialEventType = '',
   isModal = false,
   onCloseModal,
 }) => {
@@ -34,6 +35,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     email: '',
     eventType: initialEventType,
     eventDate: '',
+    preferredTime: '',
     location: '',
     notes: '',
   });
@@ -142,6 +144,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.eventType) {
+      alert('Please select an event type.');
+      return;
+    }
+
+    if (!formData.preferredTime) {
+      alert('Please select your preferred time to call.');
+      return;
+    }
+
     const phoneValid = validatePhone(formData.phone);
     const emailValidationError = validateEmail(formData.email);
 
@@ -190,6 +202,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           email: formData.email,
           shootType: formData.eventType,
           eventDate: formData.eventDate,
+          preferredTime: formData.preferredTime,
           venue: formData.location,
           message: formData.notes,
         }),
@@ -226,8 +239,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({
       name: '',
       phone: '',
       email: '',
-      eventType: 'Weddings & Celebrations',
+      eventType: '',
       eventDate: '',
+      preferredTime: '',
       location: '',
       notes: '',
     });
@@ -238,7 +252,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
       {isModal && onCloseModal && (
         <button
           onClick={onCloseModal}
-          className="absolute top-0 right-0 p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-600 transition-colors z-20"
+          className="absolute -top-22 right-0 p-2 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-600 transition-colors z-20"
           aria-label="Close form"
         >
           <X className="w-5 h-5" />
@@ -250,7 +264,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             
             {/* Full Name */}
-            <div>
+            <div className="sm:col-span-2">
               <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Your Full Name *
               </label>
@@ -327,11 +341,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               </label>
               <div className="relative">
                 <Film className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <ChevronDown className="w-4 h-4 text-zinc-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <select
+                  required
                   value={formData.eventType}
                   onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none appearance-none"
+                  className="w-full pl-10 pr-10 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none appearance-none"
                 >
+                  <option value="" disabled>Select event type</option>
                   {eventTypes.map((type) => (
                     <option key={type} value={type}>
                       {type}
@@ -360,6 +377,29 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             </div>
 
             {/* Location / City */}
+            {/* Preferred Call Time */}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+                Preferred Time to Call *
+              </label>
+              <div className="relative">
+                <ChevronDown className="w-4 h-4 text-zinc-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <select
+                  required
+                  value={formData.preferredTime}
+                  onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
+                  className="w-full px-4 pr-10 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none appearance-none"
+                >
+                  <option value="" disabled>Select preferred time</option>
+                  <option value="Anytime">Anytime</option>
+                  <option value="Morning (9 AM to 12 PM)">Morning (9 AM to 12 PM)</option>
+                  <option value="Afternoon (12 PM to 4 PM)">Afternoon (12 PM to 4 PM)</option>
+                  <option value="Evening (4 PM to 8 PM)">Evening (4 PM to 8 PM)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Location / City */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Event City / Venue *
@@ -369,7 +409,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Mumbai / Taj Lands End"
+                  placeholder="e.g. Amalapuram"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none"
