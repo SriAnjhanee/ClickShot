@@ -186,7 +186,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     setLoading(true);
 
     const SCRIPT_URL =
-      'https://script.google.com/macros/s/AKfycbzqU5BuTuJ-ubB6VO7hFs5tiyKvVdXSiTczN8xQ8URPJUBF0eV2xeEieMxm0y4EJOvI/exec';
+      'https://script.google.com/macros/s/AKfycbxRrC626_TSWqPxTDSs4tdLORrT3s7BaEAv_xVUtCY6UpP59p5YAsLvG6_gCuXFVbmh0g/exec';
 
     try {
       await fetch(SCRIPT_URL, {
@@ -254,7 +254,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Ananya Sharma"
+                  placeholder="e.g. Your Full Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none"
@@ -299,7 +299,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 <input
                   type="email"
                   required
-                  placeholder="e.g. ananya@example.com"
+                  placeholder="e.g.yourname@gmail.com"
                   value={formData.email}
                   onChange={(e) => {
                     const nextEmail = e.target.value;

@@ -31,7 +31,13 @@ export const ReelModal: React.FC<ReelModalProps> = ({ reel, onClose, onBookShoot
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
-      } else if (e.key === ' ') {
+      } else if (
+        e.key === ' ' &&
+        !(e.target instanceof HTMLInputElement) &&
+        !(e.target instanceof HTMLTextAreaElement) &&
+        !(e.target instanceof HTMLSelectElement) &&
+        !(e.target instanceof HTMLElement && e.target.isContentEditable)
+      ) {
         e.preventDefault();
         togglePlay();
       } else if (e.key === 'm' || e.key === 'M') {
