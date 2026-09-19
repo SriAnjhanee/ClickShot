@@ -107,7 +107,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Copyright & Legal Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div className="flex items-center gap-2">
-            <span>© {new Date().getFullYear()} ClickShot Media. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} ClickShot. All rights reserved.</span>
             <span>•</span>
             <span className="text-zinc-400 font-medium">Capture. Create. Click.</span>
           </div>

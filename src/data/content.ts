@@ -6,9 +6,9 @@ export const SITE_CONTENT = {
     promise: 'You enjoy the moment. We capture it. Your Reel is ready before the moment is over.',
     phone: '+91 6305718169',
     whatsapp: 'https://wa.me/6305718169?text=Hi%20ClickShot!%20I%20would%20like%20to%20inquire%20about%20booking%20an%20instant%20Reel%20shoot.',
-    email: 'hello@clickshot.media',
+    email: 'clickshot.1media@gmail.com',
     instagram: 'https://www.instagram.com/clickshot.1?igsi=ZG1oZzI5MTVuYTdn',
-    location: 'Amalapuram • Rajamahendravaram • Kakinada & Razole',
+    location: 'Amalapuram • Rajamahendravaram & Kakinada',
   },
 
   hero: {
