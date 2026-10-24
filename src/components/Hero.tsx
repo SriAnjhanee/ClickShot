@@ -61,7 +61,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
   };
 
   return (
-    <section className="relative pt-28 sm:pt-32 pb-16 md:pb-24 overflow-hidden bg-gradient-to-b from-surface-50 via-white to-white">
+    <section id="about" className="relative pt-28 sm:pt-32 pb-16 md:pb-24 overflow-hidden bg-gradient-to-b from-surface-50 via-white to-white">
       {/* Background Subtle Ambience Glow */}
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-brand-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
       <div className="absolute top-1/3 -right-20 w-[450px] h-[450px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
