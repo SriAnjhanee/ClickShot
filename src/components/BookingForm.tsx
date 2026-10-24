@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { SITE_CONTENT } from '../data/content';
 import { 
   Calendar, 
@@ -29,6 +29,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   onCloseModal,
 }) => {
   const { brand } = SITE_CONTENT;
+  const formId = useId();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -207,7 +208,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         }),
       });
 
-      setLoading(false);
       setSubmitted(true);
 
       confetti({
@@ -219,8 +219,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
     } catch (error) {
       console.error('Form submission error:', error);
-      setLoading(false);
       alert('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -246,14 +247,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             
             {/* Full Name */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-customerName`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Your Full Name *
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id={`${formId}-customerName`}
+                  name="customerName"
                   type="text"
                   required
+                  autoComplete="name"
                   placeholder="e.g. Your Full Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -264,7 +268,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Phone Number */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-customerPhone`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Phone / WhatsApp Number *
               </label>
               <div className="relative">
@@ -272,8 +276,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 <div className="w-full pl-10 flex items-center rounded-xl border border-zinc-200 bg-surface-50 focus-within:bg-white focus-within:border-brand-600 focus-within:ring-2 focus-within:ring-brand-600/20 transition-all">
                   <span className="pl-3 pr-2 text-sm font-semibold text-surface-600 border-r border-zinc-200">+91</span>
                   <input
+                    id={`${formId}-customerPhone`}
+                    name="customerPhone"
                     type="tel"
                     required
+                    autoComplete="tel-national"
                     inputMode="numeric"
                     pattern="[6-9][0-9]{9}"
                     maxLength={10}
@@ -291,14 +298,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Email Address */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-customerEmail`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Email Address *
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id={`${formId}-customerEmail`}
+                  name="customerEmail"
                   type="email"
                   required
+                  autoComplete="email"
                   placeholder="e.g.yourname@gmail.com"
                   value={formData.email}
                   onChange={(e) => {
@@ -317,14 +327,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Event / Shoot Type */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-eventType`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Event / Shoot Type *
               </label>
               <div className="relative">
                 <Film className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <ChevronDown className="w-4 h-4 text-zinc-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <select
+                  id={`${formId}-eventType`}
+                  name="eventType"
                   required
+                  autoComplete="off"
                   value={formData.eventType}
                   onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
                   className="w-full pl-10 pr-10 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none appearance-none"
@@ -341,14 +354,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Event Date */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-eventDate`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Event Date *
               </label>
               <div className="relative">
                 <Calendar className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id={`${formId}-eventDate`}
+                  name="eventDate"
                   type="date"
                   required
+                  autoComplete="off"
                   min={minBookingDate}
                   value={formData.eventDate}
                   onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
@@ -360,13 +376,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             {/* Location / City */}
             {/* Preferred Call Time */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-preferredTime`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Preferred Time to Call *
               </label>
               <div className="relative">
                 <ChevronDown className="w-4 h-4 text-zinc-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <select
+                  id={`${formId}-preferredTime`}
+                  name="preferredTime"
                   required
+                  autoComplete="off"
                   value={formData.preferredTime}
                   onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
                   className="w-full px-4 pr-10 py-3 rounded-xl border border-zinc-200 bg-surface-50 focus:bg-white focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 text-sm font-medium text-surface-950 transition-all outline-none appearance-none"
@@ -382,14 +401,17 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Location / City */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+              <label htmlFor={`${formId}-eventVenue`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
                 Event City / Venue *
               </label>
               <div className="relative">
                 <MapPin className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id={`${formId}-eventVenue`}
+                  name="eventVenue"
                   type="text"
                   required
+                  autoComplete="off"
                   placeholder="e.g. Amalapuram"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
@@ -402,11 +424,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
           {/* Tell Us About Your Shoot */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
+            <label htmlFor={`${formId}-shootNotes`} className="block text-xs font-bold uppercase tracking-wider text-surface-950 mb-2">
               Tell Us About Your Shoot & Vibe (Optional)
             </label>
             <textarea
+              id={`${formId}-shootNotes`}
+              name="shootNotes"
               rows={3}
+              autoComplete="off"
               placeholder="Tell us about the key moments (e.g. Varmala, afterparty, fashion runway, specific trending music preferences)..."
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}

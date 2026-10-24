@@ -107,7 +107,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
               </button>
 
               <a
-                href="#portfolio"
+                href="#services"
                 className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full bg-white text-zinc-800 font-semibold text-base border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 shadow-sm transition-all duration-200"
               >
                 <Film className="w-4 h-4 text-brand-600" />
@@ -121,7 +121,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
           <div className="lg:col-span-6 relative flex items-center justify-center py-4 lg:py-0">
             
             {/* Visual Multi-Reel Stage */}
-            <div className="relative w-full max-w-[480px] h-[520px] sm:h-[600px] flex items-center justify-center">
+            <div id="portfolio" className="relative w-full max-w-[480px] h-[520px] sm:h-[600px] flex items-center justify-center">
               
               {/* Left Layered Reel Card (Background Left) */}
               <div 
@@ -134,6 +134,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-3 text-white">
@@ -154,6 +155,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-3 text-white">
@@ -169,13 +171,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onSelectReel }) => {
                 {/* Main 9:16 Video */}
                 <video
                   ref={centerVideoRef}
-                  src={HERO_REELS[0].videoUrl}
                   autoPlay
                   loop
                   muted={isMuted}
                   playsInline
+                  preload="metadata"
+                  poster="/images/reel-poster.webp"
                   className="w-full h-full object-cover"
-                />
+                >
+                  <source src={HERO_REELS[0].videoUrl} type="video/mp4" />
+                </video>
 
                 {/* Top Video Header Overlay */}
                 <div className="absolute top-0 inset-x-0 p-4 bg-gradient-to-b from-black/70 via-black/30 to-transparent flex items-center justify-between text-white z-10">

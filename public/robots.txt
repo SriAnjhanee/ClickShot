@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://click-shot.vercel.app/sitemap.xml
