@@ -10,12 +10,14 @@ import { CTASection } from './components/CTASection';
 import { BookingForm } from './components/BookingForm';
 import { Footer } from './components/Footer';
 import { ReelModal } from './components/ReelModal';
+import { ReelMakerPage } from './components/ReelMakerPage';
 import type { ReelItem } from './data/portfolio';
 
 export function App() {
   const [selectedReel, setSelectedReel] = useState<ReelItem | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [selectedServiceForBooking, setSelectedServiceForBooking] = useState('');
+  const isRecruitmentPage = window.location.pathname.replace(/\/+$/, '') === '/become-a-reel-maker';
 
   const handleOpenBooking = (serviceType?: string) => {
     if (serviceType) {
@@ -39,49 +41,42 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-surface-950 font-sans selection:bg-brand-600 selection:text-white flex flex-col">
+    <div className={`min-h-screen bg-white text-surface-950 font-sans selection:bg-brand-600 selection:text-white flex flex-col ${isRecruitmentPage ? 'reel-maker-shell' : ''}`}>
       {/* Sticky Header */}
-      <Navbar onOpenBooking={() => handleOpenBooking()} />
+      <Navbar onOpenBooking={() => handleOpenBooking()} isRecruitmentPage={isRecruitmentPage} />
 
       {/* Main Content Sections */}
       <main className="flex-grow">
-        {/* 1. Hero Section with Cinematic 9:16 Vertical Reel Multi-Stage */}
-        <Hero
-          onOpenBooking={() => handleOpenBooking()}
-          onSelectReel={(reel) => setSelectedReel(reel)}
-        />
-
-        {/* 2. How ClickShot Works (3-Step Animated Timeline) */}
-        <HowItWorks />
-
-        {/* 3. Services */}
-        <Services />
-
-        {/* 4. Location */}
-        <Location />
-
-        {/* 4. Why ClickShot Differentiators */}
-        <WhyUs />
-
-        {/* 5. Testimonials - Hanging Cards */}
-        <Testimonials />
-
-        {/* 6. High-Impact CTA Banner */}
-        <CTASection onOpenBooking={() => handleOpenBooking()} />
-
-        {/* 6. Main Interactive Booking Section */}
-        <BookingForm initialEventType={selectedServiceForBooking} />
+        {isRecruitmentPage ? (
+          <ReelMakerPage />
+        ) : (
+          <>
+            <Hero
+              onOpenBooking={() => handleOpenBooking()}
+              onSelectReel={(reel) => setSelectedReel(reel)}
+            />
+            <HowItWorks />
+            <Services />
+            <Location />
+            <WhyUs />
+            <Testimonials />
+            <CTASection onOpenBooking={() => handleOpenBooking()} />
+            <BookingForm initialEventType={selectedServiceForBooking} />
+          </>
+        )}
       </main>
 
       {/* Global Footer */}
-      <Footer />
+      <Footer isRecruitmentPage={isRecruitmentPage} />
 
       {/* Full-Fidelity Reel Lightbox Modal */}
-      <ReelModal
-        reel={selectedReel}
-        onClose={() => setSelectedReel(null)}
-        onBookShoot={handleBookFromReel}
-      />
+      {!isRecruitmentPage && (
+        <ReelModal
+          reel={selectedReel}
+          onClose={() => setSelectedReel(null)}
+          onBookShoot={handleBookFromReel}
+        />
+      )}
 
       {/* Quick Booking Modal */}
       {bookingModalOpen && (

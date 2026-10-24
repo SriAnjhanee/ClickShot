@@ -1,3 +1,5 @@
+export const CLICKSHOT_WHATSAPP_NUMBER = '916305718169';
+
 export const SITE_CONTENT = {
   brand: {
     name: 'ClickShot',
@@ -129,22 +131,22 @@ export const SITE_CONTENT = {
     subheading: 'From sacred vows to brand launches — we capture it all and deliver before the moment fades.',
     items: [
       {
-        id: 'weddings',
+        id: 'celebrations',
         title: 'Birthday',
         category: 'CELEBRATION',
       },
       {
-        id: 'celebrations',
+        id: 'creators',
         title: 'Cinematic',
         category: 'CREATOR',
       },
       {
-        id: 'birthdays',
-        title: 'Baby Shower',
-        category: 'PARTY',
+        id: 'special occasions',
+        title: 'Car Delivery',
+        category: 'SPECIAL OCCASION',
       },
       {
-        id: 'brands',
+        id: 'weddings',
         title: 'Golden Hour',
         category: 'WEDDING',
       },
@@ -198,6 +200,12 @@ export const SITE_CONTENT = {
       quote: 'Na traditional look ni chala beautiful ga capture chesaru. Photos and reel rendu chala elegant ga vachayi, especially the way they captured the small details. Overall, chala happy with the output!',
       name: 'Ramya',
       event: 'Creators · Amalapuram',
+      rating: 5,
+    },
+    {
+      quote: 'Loved the wedding reel, and they even delivered one reel within 30 minutes during the event!❤️   Special mention to the wedding reel, I’ve watched it so many times already, and I absolutely love it! 😍 Super friendly, professional team. Highly recommend ClickShot for every occasion! 🎥❤️',
+      name: 'iam_viswakalyan,t.e.j.u_3',
+      event: 'Wedding · Pitapuram',
       rating: 5,
     },
   ],

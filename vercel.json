@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/become-a-reel-maker",
+      "destination": "/"
+    }
+  ]
+}

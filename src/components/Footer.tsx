@@ -4,8 +4,13 @@ import { SITE_CONTENT } from '../data/content';
 import { MessageCircle, MapPin, Mail, Phone, ArrowUp } from 'lucide-react';
 
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  isRecruitmentPage?: boolean;
+}
+
+export const Footer: React.FC<FooterProps> = ({ isRecruitmentPage = false }) => {
   const { brand } = SITE_CONTENT;
+  const sectionHref = (href: string) => isRecruitmentPage ? `/${href}` : href;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -73,11 +78,12 @@ export const Footer: React.FC = () => {
               Quick Navigation
             </h4>
             <ul className="space-y-2 text-sm text-zinc-400">
-              <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
-              <li><a href="#services" className="hover:text-white transition-colors">Services</a></li>
-              <li><a href="#location" className="hover:text-white transition-colors">Location</a></li>
-              <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
-              <li><a href="#why-us" className="hover:text-white transition-colors">Why ClickShot</a></li>
+              <li><a href={sectionHref('#about')} className="hover:text-white transition-colors">About</a></li>
+              <li><a href={sectionHref('#services')} className="hover:text-white transition-colors">Services</a></li>
+              <li><a href={sectionHref('#location')} className="hover:text-white transition-colors">Location</a></li>
+              <li><a href={sectionHref('#how-it-works')} className="hover:text-white transition-colors">How It Works</a></li>
+              <li><a href={sectionHref('#why-us')} className="hover:text-white transition-colors">Why ClickShot</a></li>
+              <li><a href="/become-a-reel-maker" className="text-brand-400 hover:text-white transition-colors">Become a Reel Maker</a></li>
             </ul>
           </div>
 

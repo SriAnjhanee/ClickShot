@@ -5,9 +5,10 @@ import logoImg from '../assets/logo.jpg';
 
 interface NavbarProps {
   onOpenBooking: () => void;
+  isRecruitmentPage?: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, isRecruitmentPage = false }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -34,6 +35,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
+    if (isRecruitmentPage) {
+      window.location.href = `/${href}`;
+      return;
+    }
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -43,16 +48,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? 'glass-header py-1 shadow-subtle'
-          : 'bg-white/70 backdrop-blur-md py-1 border-b border-zinc-100'
+        isRecruitmentPage
+          ? 'bg-white py-1 border-b border-zinc-100 shadow-subtle'
+          : scrolled
+            ? 'glass-header py-1 shadow-subtle'
+            : 'bg-white/70 backdrop-blur-md py-1 border-b border-zinc-100'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
           <a
-            href="#"
+            href="/"
             className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 rounded-lg"
             aria-label="ClickShot Home"
           >
@@ -60,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-6" aria-label="Main Navigation">
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <button
                 key={link.label}
@@ -70,10 +77,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                 {link.label}
               </button>
             ))}
+            <a
+              href="/become-a-reel-maker"
+              className="text-xs font-extrabold tracking-wide text-brand-700 hover:text-brand-600 transition-colors duration-200 whitespace-nowrap"
+            >
+              BECOME A REEL MAKER
+            </a>
           </nav>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             <a
               href={SITE_CONTENT.brand.whatsapp}
               target="_blank"
@@ -95,11 +108,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2.5 rounded-xl text-zinc-800 hover:bg-zinc-100 transition-colors"
               aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -109,7 +124,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-x-0 top-full bg-white/95 backdrop-blur-xl border-b border-zinc-200 shadow-2xl p-6 transition-all duration-300 animate-in fade-in slide-in-from-top-4">
+        <div id="mobile-navigation" className="lg:hidden fixed inset-x-0 top-full bg-white/95 backdrop-blur-xl border-b border-zinc-200 shadow-2xl p-6 transition-all duration-300 animate-in fade-in slide-in-from-top-4">
           <div className="flex flex-col space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
               <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">Navigation</span>
@@ -125,6 +140,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                 <ArrowUpRight className="w-4 h-4 text-zinc-400" />
               </button>
             ))}
+
+            <a
+              href="/become-a-reel-maker"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2 text-base font-extrabold text-brand-700 hover:text-brand-600 text-left transition-colors"
+            >
+              <span>BECOME A REEL MAKER</span>
+              <ArrowUpRight className="w-4 h-4 text-brand-600" />
+            </a>
 
             <div className="pt-4 border-t border-zinc-100 flex flex-col gap-3">
               <button

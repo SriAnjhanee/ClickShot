@@ -2,6 +2,120 @@
 @config "../tailwind.config.js";
 
 @layer base {
+  .reel-maker-shell {
+    --spacing: 0.25rem;
+  }
+
+  .reel-maker-workspace {
+    display: block;
+    width: 100%;
+    max-width: 80rem;
+  }
+
+  .reel-maker-hero {
+    padding-block: clamp(7rem, 10vw, 8.5rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .reel-maker-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  }
+
+  .reel-maker-title {
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    overflow-wrap: anywhere;
+  }
+
+  .reel-maker-intro {
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.75;
+  }
+
+  .reel-maker-promo {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .reel-maker-promo-title {
+    font-size: clamp(2.25rem, 4vw, 3rem);
+  }
+
+  .reel-maker-form-panel {
+    border-radius: 0.75rem;
+  }
+
+  .reel-maker-page input:not([type="checkbox"]),
+  .reel-maker-page select {
+    min-height: 3rem;
+  }
+
+  .reel-maker-page input,
+  .reel-maker-page select,
+  .reel-maker-page textarea,
+  .reel-maker-page button {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .reel-maker-page textarea {
+    width: 100%;
+  }
+
+  .reel-maker-form-panel,
+  .reel-maker-application,
+  .reel-maker-requirements {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .reel-maker-application {
+      max-width: 48rem;
+      justify-self: center;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .reel-maker-hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reel-maker-title {
+      font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .reel-maker-eyebrow {
+      letter-spacing: 0.08em;
+    }
+
+    .reel-maker-promo {
+      max-width: 32rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .reel-maker-field-grid,
+    .reel-maker-optional-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .reel-maker-form-panel {
+      padding: 1rem;
+    }
+
+    .reel-maker-page button[type="submit"] {
+      padding-inline: 1rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .reel-maker-field-grid,
+    .reel-maker-optional-grid,
+    .reel-maker-skill-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   html {
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
